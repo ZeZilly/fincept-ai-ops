@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MARKET_DATA_PROVIDER=${MARKET_DATA_PROVIDER:-stub}
+      - AUDIT_LOG_PATH=/app/data/audit/audit.jsonl
+      - STATE_PATH=/app/data/state
+      - APPROVAL_SECRET=${APPROVAL_SECRET:-changeme}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  mcp:
+    build: .
+    command: python mcp/server.py
+    environment:
+      - MARKET_DATA_PROVIDER=${MARKET_DATA_PROVIDER:-stub}
+      - STATE_PATH=/app/data/state
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - api
+    stdin_open: true
+    tty: true
+    restart: unless-stopped

@@ -1,30 +1,19 @@
 connectors:
   market_data:
     status: active
-    purpose: price, ohlcv, watchlist
     class: apps.fincept_aiops.connectors.market_data.MarketDataConnector
   fundamentals:
     status: active
-    purpose: balance sheet, income, cash flow
     class: apps.fincept_aiops.connectors.fundamentals.FundamentalsConnector
   news:
     status: active
-    purpose: news and event data
     class: apps.fincept_aiops.connectors.news.NewsConnector
   backtest:
     status: active
-    purpose: signal test and performance
     class: apps.fincept_aiops.connectors.backtest_connector.BacktestConnector
   broker_sandbox:
     status: active
-    purpose: paper order execution only
     class: apps.fincept_aiops.connectors.broker_sandbox.BrokerSandboxConnector
   live_broker:
     status: disabled
     reason: no_live_trading_in_mvp
-  gmail:
-    status: disabled
-    reason: not_needed_mvp
-  slack:
-    status: disabled
-    reason: not_needed_mvp

@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main, youtube]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          MARKET_DATA_PROVIDER: stub
+          AUDIT_LOG_PATH: /tmp/audit.jsonl
+          STATE_PATH: /tmp/state
+          APPROVAL_SECRET: test-secret
+        run: pytest tests/ -v --tb=short
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: .pytest_cache/
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t fincept-ai-ops:${{ github.sha }} .
+      - name: Smoke test container
+        run: |
+          docker run -d --name test-api -p 8000:8000 fincept-ai-ops:${{ github.sha }}
+          sleep 5
+          curl -f http://localhost:8000/health
+          docker stop test-api

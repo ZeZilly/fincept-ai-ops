@@ -1,16 +1,1 @@
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "OrderIntent",
-  "type": "object",
-  "required": ["asset", "side", "thesis"],
-  "properties": {
-    "asset": {"type": "string"},
-    "side": {"type": "string", "enum": ["buy", "sell"]},
-    "thesis": {"type": "string"},
-    "entry_type": {"type": "string", "enum": ["market", "limit"]},
-    "size_pct": {"type": "number", "minimum": 0, "maximum": 0.10},
-    "time_in_force": {"type": "string"},
-    "qty": {"type": "number", "minimum": 0},
-    "price": {"type": ["number", "null"]}
-  }
-}
+{"$schema":"http://json-schema.org/draft-07/schema#","title":"OrderIntent","type":"object","required":["asset","side","thesis"],"properties":{"asset":{"type":"string"},"side":{"type":"string","enum":["buy","sell"]},"thesis":{"type":"string"},"size_pct":{"type":"number","minimum":0,"maximum":0.10},"qty":{"type":"number","minimum":0},"price":{"type":["number","null"]}}}
