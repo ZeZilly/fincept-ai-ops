@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from apps.fincept_aiops.state_store import StateStore
 from apps.fincept_aiops.audit_logger import AuditLogger
 
-router = APIRouter()
+router = APIRouter(tags=["ui"])
 state = StateStore()
 audit = AuditLogger()
 

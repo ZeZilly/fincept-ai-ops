@@ -12,10 +12,10 @@ class AuditLogger:
     def append(self, record: dict):
         record.setdefault("ts", datetime.utcnow().isoformat() + "Z")
         with open(self.path, "a", encoding="utf-8") as f:
-            f.write(json.dumps(record) + "\n")
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     def recent(self, n: int = 50):
         if not self.path.exists():
             return []
         lines = self.path.read_text(encoding="utf-8").strip().split("\n")
-        return [json.loads(l) for l in lines[-n:] if l]
+        return [json.loads(l) for l in lines[-n:] if l.strip()]

@@ -18,4 +18,5 @@ def configure_logging():
     handler.setFormatter(JSONFormatter())
     root = logging.getLogger()
     root.setLevel(logging.INFO)
-    root.addHandler(handler)
+    if not root.handlers:
+        root.addHandler(handler)
