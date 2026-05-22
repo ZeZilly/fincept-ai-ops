@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "apps/fincept_aiops/app.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "apps/fincept_aiops/app.py"
+      "dest": "api/index.py"
     }
   ]
 }
