@@ -16,13 +16,7 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 app.include_router(main_router)
 app.include_router(broker_router)
 app.include_router(approval_router)
@@ -31,10 +25,4 @@ app.include_router(ui_router)
 
 @app.get("/")
 def root():
-    return {
-        "service": "fincept-ai-ops",
-        "version": "1.0.0",
-        "mode": "paper",
-        "live_trading": False,
-        "docs": "/docs",
-    }
+    return {"service": "fincept-ai-ops", "version": "1.0.0", "mode": "paper", "live_trading": False, "docs": "/docs"}

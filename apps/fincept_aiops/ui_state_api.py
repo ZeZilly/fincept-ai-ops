@@ -9,12 +9,8 @@ audit = AuditLogger()
 
 @router.get("/ui/paper-state")
 def paper_state():
-    return {
-        "signal": state.load("latest_signal_candidate"),
-        "risk": state.load("latest_risk"),
-        "briefing": state.load("latest_briefing"),
-        "approval": state.load("latest_approval"),
-    }
+    return {"signal": state.load("latest_signal_candidate"), "risk": state.load("latest_risk"),
+            "briefing": state.load("latest_briefing"), "approval": state.load("latest_approval")}
 
 
 @router.get("/ui/audit")

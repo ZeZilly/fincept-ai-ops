@@ -4,7 +4,6 @@ from apps.fincept_aiops.paper_broker import PaperBrokerAdapter
 
 
 class BrokerSandboxConnector(BaseConnector):
-    """Connector 5/5 — paper order execution. No live trading path."""
     name = "broker_sandbox"
 
     def __init__(self):
@@ -15,13 +14,7 @@ class BrokerSandboxConnector(BaseConnector):
         if action == "submit":
             return self.broker.submit_order(params.get("order_intent", {}))
         if action == "close":
-            return self.broker.close_position(
-                params.get("asset", ""), float(params.get("price", 0))
-            )
+            return self.broker.close_position(params.get("asset", ""), float(params.get("price", 0)))
         if action == "reconcile":
-            return {
-                "positions": self.broker.get_positions(),
-                "orders": self.broker.get_orders(),
-                "summary": self.broker.get_summary(),
-            }
+            return {"positions": self.broker.get_positions(), "orders": self.broker.get_orders(), "summary": self.broker.get_summary()}
         return {"ok": False, "error": f"unknown_action: {action}"}

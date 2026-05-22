@@ -14,7 +14,7 @@ ACTIVE_CONNECTORS = {
 
 
 def get_connector(name: str):
-    conn = ACTIVE_CONNECTORS.get(name)
-    if conn is None:
-        raise KeyError(f"Connector '{name}' not found or disabled in MVP policy.")
-    return conn
+    c = ACTIVE_CONNECTORS.get(name)
+    if c is None:
+        raise KeyError(f"Connector '{name}' not found or disabled.")
+    return c

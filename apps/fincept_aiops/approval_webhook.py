@@ -17,24 +17,12 @@ class ApprovalRequest(BaseModel):
 
 
 @router.post("/approval/webhook")
-def handle_approval(
-    req: ApprovalRequest,
-    x_approval_secret: str = Header(default=""),
-):
-    expected = os.getenv("APPROVAL_SECRET", "changeme")
-    if x_approval_secret != expected:
+def handle_approval(req: ApprovalRequest, x_approval_secret: str = Header(default="")):
+    if x_approval_secret != os.getenv("APPROVAL_SECRET", "changeme"):
         raise HTTPException(status_code=403, detail="invalid_secret")
-    record = {
-        "human_approved": req.approved,
-        "approver_id": req.approver_id,
-        "approved_at": datetime.utcnow().isoformat() + "Z",
-        "reason": req.reason,
-    }
+    record = {"human_approved": req.approved, "approver_id": req.approver_id,
+               "approved_at": datetime.utcnow().isoformat() + "Z", "reason": req.reason}
     state.save("latest_approval", record)
-    audit.append({
-        "actor": req.approver_id,
-        "action": "approval_decision",
-        "approved": req.approved,
-        "reason": req.reason,
-    })
+    audit.append({"actor": req.approver_id, "action": "approval_decision",
+                  "approved": req.approved, "reason": req.reason})
     return {"ok": True, "record": record}

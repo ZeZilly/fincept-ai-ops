@@ -2,41 +2,39 @@
 
 ## Stack
 
-| Layer | Component | Technology |
-|---|---|---|
-| Model | LLM integration | OpenAI / Anthropic |
-| Tool-use | MCP server tools | financial-datasets MCP |
-| Memory | State store + artifacts | JSON files / DB |
-| Orchestration | Workflow routing | N8N + orchestrator.py |
-| UI | Paper dashboard | FastAPI + /docs |
-| Auth | Human approval gate | approval_webhook.py |
-| Monitoring | Audit JSONL | Python structured logging |
+| Layer | Component |
+|---|---|
+| API | FastAPI (app.py) |
+| Orchestration | orchestrator.py + N8N |
+| Agents | research_agent, briefing_agent, audit_agent |
+| Pipeline | research_pipeline.py |
+| Signal | strategy_lab.py |
+| Risk | risk_policy.py (no prompt override) |
+| Execution | paper_broker.py (no live trading) |
+| State | state_store.py (JSON files) |
+| Audit | audit_logger.py (JSONL append-only) |
+| Connectors | market_data, fundamentals, news, backtest, broker_sandbox |
 
 ## Data Flow
 
 ```
 Market Data + News + Fundamentals
            ↓
-    research_agent (collect + build note)
+    ResearchAgent.run(symbol)
            ↓
-    ResearchPipeline (validate → enrich → signal → risk → persist)
+    ResearchPipeline.run(research_note)
+      validate → confidence_gate → sources_gate
+      → StrategyLab.generate_signal()
+      → RiskPolicy.evaluate()
+      → StateStore.save()
+      → AuditLogger.append()
            ↓
-    Human Approval Gate (POST /approval/webhook)
+    Human Approval Gate
+    POST /approval/webhook  {approved: true}
            ↓
-    PaperBrokerAdapter (POST /broker/paper-submit)
+    POST /broker/paper-submit  {human_approved: true}
            ↓
-    AuditLogger (append-only JSONL)
+    PaperBrokerAdapter.submit_order()
            ↓
-    DailyBriefingGenerator (POST /briefing/build)
+    DailyBriefingGenerator.build()
 ```
-
-## Agent Map
-
-| Agent | Class | Role |
-|---|---|---|
-| research_agent | ResearchAgent | Collect data, build research note |
-| strategy_lab | StrategyLab | Generate signal candidate |
-| risk_guard | RiskPolicy | Evaluate order intent |
-| execution_ops | PaperBrokerAdapter | Execute paper orders |
-| briefing_agent | DailyBriefingGenerator | Build daily summary |
-| audit_agent | AuditLogger | Append-only audit trail |
