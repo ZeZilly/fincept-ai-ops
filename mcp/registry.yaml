@@ -1,0 +1,30 @@
+connectors:
+  market_data:
+    status: active
+    purpose: price, ohlcv, watchlist
+    adapter: apps.fincept_aiops.mcp.yfinance_adapter
+  fundamentals:
+    status: active
+    purpose: balance sheet, income, cash flow
+    adapter: apps.fincept_aiops.mcp.real_provider_adapter
+  news:
+    status: active
+    purpose: news and event data
+    adapter: apps.fincept_aiops.mcp.real_provider_adapter
+  backtest:
+    status: active
+    purpose: signal test and performance
+    adapter: apps.fincept_aiops.backtest_runner
+  broker_sandbox:
+    status: active
+    purpose: paper order execution
+    adapter: apps.fincept_aiops.paper_broker
+  live_broker:
+    status: disabled
+    reason: no_live_trading_in_mvp
+  gmail:
+    status: disabled
+    reason: not_needed_mvp
+  slack:
+    status: disabled
+    reason: not_needed_mvp

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OrderIntent",
+  "type": "object",
+  "required": ["asset", "side", "thesis"],
+  "properties": {
+    "asset": {"type": "string"},
+    "side": {"type": "string", "enum": ["buy", "sell"]},
+    "thesis": {"type": "string"},
+    "entry_type": {"type": "string", "enum": ["market", "limit"]},
+    "size_pct": {"type": "number"},
+    "time_in_force": {"type": "string"},
+    "qty": {"type": "number"},
+    "price": {"type": ["number", "null"]},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}
