@@ -5,11 +5,15 @@
   "required": ["date"],
   "properties": {
     "date": {"type": "string", "format": "date"},
+    "generated_at": {"type": "string", "format": "date-time"},
     "market_summary": {"type": "string"},
     "watchlist_changes": {"type": "array"},
     "portfolio_highlights": {"type": "array"},
     "pending_actions": {"type": "array", "items": {"type": "string"}},
     "macro_events": {"type": "array"},
-    "risks_to_watch": {"type": "array", "items": {"type": "string"}}
+    "risks_to_watch": {"type": "array", "items": {"type": "string"}},
+    "signal": {"type": "object"},
+    "risk": {"type": "object"},
+    "approval": {"type": "object"}
   }
 }

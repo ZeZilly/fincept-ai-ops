@@ -8,10 +8,9 @@
     "side": {"type": "string", "enum": ["buy", "sell"]},
     "thesis": {"type": "string"},
     "entry_type": {"type": "string", "enum": ["market", "limit"]},
-    "size_pct": {"type": "number"},
+    "size_pct": {"type": "number", "minimum": 0, "maximum": 0.10},
     "time_in_force": {"type": "string"},
-    "qty": {"type": "number"},
-    "price": {"type": ["number", "null"]},
-    "created_at": {"type": "string", "format": "date-time"}
+    "qty": {"type": "number", "minimum": 0},
+    "price": {"type": ["number", "null"]}
   }
 }

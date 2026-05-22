@@ -2,23 +2,23 @@ connectors:
   market_data:
     status: active
     purpose: price, ohlcv, watchlist
-    adapter: apps.fincept_aiops.mcp.yfinance_adapter
+    class: apps.fincept_aiops.connectors.market_data.MarketDataConnector
   fundamentals:
     status: active
     purpose: balance sheet, income, cash flow
-    adapter: apps.fincept_aiops.mcp.real_provider_adapter
+    class: apps.fincept_aiops.connectors.fundamentals.FundamentalsConnector
   news:
     status: active
     purpose: news and event data
-    adapter: apps.fincept_aiops.mcp.real_provider_adapter
+    class: apps.fincept_aiops.connectors.news.NewsConnector
   backtest:
     status: active
     purpose: signal test and performance
-    adapter: apps.fincept_aiops.backtest_runner
+    class: apps.fincept_aiops.connectors.backtest_connector.BacktestConnector
   broker_sandbox:
     status: active
-    purpose: paper order execution
-    adapter: apps.fincept_aiops.paper_broker
+    purpose: paper order execution only
+    class: apps.fincept_aiops.connectors.broker_sandbox.BrokerSandboxConnector
   live_broker:
     status: disabled
     reason: no_live_trading_in_mvp

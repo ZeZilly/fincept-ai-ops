@@ -13,8 +13,11 @@ def validate_order_intent(data: Dict[str, Any]) -> List[str]:
 
 
 def is_valid_confidence(data: Dict[str, Any]) -> bool:
-    return float(data.get("confidence", 0)) >= 0.70
+    try:
+        return float(data.get("confidence", 0)) >= 0.70
+    except (TypeError, ValueError):
+        return False
 
 
 def has_minimum_sources(data: Dict[str, Any]) -> bool:
-    return len(data.get("sources_checked", [])) >= 2
+    return len(data.get("sources_checked") or []) >= 2

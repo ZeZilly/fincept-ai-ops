@@ -20,3 +20,8 @@ class StateStore:
 
     def exists(self, key: str) -> bool:
         return (self.base / f"{key}.json").exists()
+
+    def delete(self, key: str):
+        p = self.base / f"{key}.json"
+        if p.exists():
+            p.unlink()

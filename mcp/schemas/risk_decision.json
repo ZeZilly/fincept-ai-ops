@@ -2,11 +2,11 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "RiskDecision",
   "type": "object",
-  "required": ["status"],
+  "required": ["status", "checked_at"],
   "properties": {
     "status": {"type": "string", "enum": ["approved", "rejected", "review"]},
     "reason_codes": {"type": "array", "items": {"type": "string"}},
-    "score": {"type": "number"},
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
     "checked_at": {"type": "string", "format": "date-time"}
   }
 }

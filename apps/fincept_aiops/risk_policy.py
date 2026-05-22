@@ -3,31 +3,37 @@ from datetime import datetime
 
 MAX_SIZE_PCT = 0.10
 MAX_DAILY_LOSS_PCT = 0.05
-BLOCKED_SIDES = []
+BLOCKED_SIDES: list = []
 
 
 class RiskPolicy:
-    def evaluate(self, order_intent: Dict[str, Any], portfolio_context: Dict[str, Any]) -> Dict[str, Any]:
-        reason_codes = []
+    """Single source of truth for risk evaluation. No prompt-based overrides allowed."""
+
+    def evaluate(
+        self,
+        order_intent: Dict[str, Any],
+        portfolio_context: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        reasons: list[str] = []
 
         if order_intent.get("side") in BLOCKED_SIDES:
-            reason_codes.append("blocked_side")
+            reasons.append("blocked_side")
 
-        size_pct = float(order_intent.get("size_pct", 0) or 0)
+        size_pct = float(order_intent.get("size_pct") or 0)
         if size_pct > MAX_SIZE_PCT:
-            reason_codes.append("size_too_large")
+            reasons.append("size_too_large")
 
-        daily_loss = float(portfolio_context.get("daily_loss_pct", 0) or 0)
+        daily_loss = float(portfolio_context.get("daily_loss_pct") or 0)
         if daily_loss >= MAX_DAILY_LOSS_PCT:
-            reason_codes.append("daily_loss_limit_reached")
+            reasons.append("daily_loss_limit_reached")
 
         if portfolio_context.get("locked"):
-            reason_codes.append("portfolio_locked")
+            reasons.append("portfolio_locked")
 
-        status = "approved" if not reason_codes else "rejected"
+        status = "approved" if not reasons else "rejected"
         return {
             "status": status,
-            "reason_codes": reason_codes,
-            "score": round(1.0 - len(reason_codes) * 0.25, 2),
+            "reason_codes": reasons,
+            "score": round(max(0.0, 1.0 - len(reasons) * 0.25), 2),
             "checked_at": datetime.utcnow().isoformat() + "Z",
         }
