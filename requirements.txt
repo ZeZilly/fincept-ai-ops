@@ -1,11 +1,20 @@
-fastapi>=0.111.0
-uvicorn[standard]>=0.29.0
-pydantic>=2.7.0
-httpx>=0.27.0
-pytest>=8.2.0
-pytest-asyncio>=0.23.0
-httpretty>=1.1.0
-yfinance>=0.2.38
-python-multipart>=0.0.9
-python-dotenv>=1.0.0
-tenacity>=8.3.0
+# Core framework
+fastapi==0.111.1
+uvicorn[standard]==0.30.1
+pydantic==2.7.4
+python-multipart==0.0.9
+python-dotenv==1.0.1
+
+# HTTP client
+httpx==0.27.0
+
+# Testing
+pytest==8.2.2
+pytest-asyncio==0.23.7
+httpretty==1.1.0
+
+# Market data
+yfinance==0.2.40
+
+# Reliability
+tenacity==8.3.0

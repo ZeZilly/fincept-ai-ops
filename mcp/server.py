@@ -2,6 +2,17 @@
 """
 Fincept AI Ops — MCP StdIO Server
 Exposes connectors and pipeline as MCP tools for Claude / LLM agents.
+
+⚠️  SECURITY NOTICE
+⚠️  This server communicates exclusively over stdin/stdout (StdIO transport).
+⚠️  It is designed for LOCAL use only — called by a local LLM client (e.g. Claude Desktop).
+⚠️  DO NOT:
+⚠️    - expose this server on a TCP port
+⚠️    - run it behind a reverse proxy open to the internet
+⚠️    - wrap it with a REST API without adding authentication
+⚠️  The StdIO channel has no authentication layer by design.
+⚠️  Access control is enforced by the OS process model (who can exec this process).
+
 Run: python mcp/server.py
 """
 import json

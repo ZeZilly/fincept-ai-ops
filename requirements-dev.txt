@@ -1,0 +1,13 @@
+# Development-only dependencies
+# Install with: pip install -r requirements-dev.txt
+
+# Includes all production deps
+-r requirements.txt
+
+# Code quality
+ruff==0.4.9
+mypy==1.10.0
+bandit==1.7.9
+
+# Security audit
+pip-audit==2.7.3
